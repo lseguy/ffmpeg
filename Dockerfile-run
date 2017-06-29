@@ -38,7 +38,7 @@
 #RUN  \
 ## libopus https://www.opus-codec.org/
         DIR=$(mktemp -d) && cd ${DIR} && \
-        curl -sLO http://downloads.xiph.org/releases/opus/opus-${OPUS_VERSION}.tar.gz && \
+        curl -sLO https://archive.mozilla.org/pub/opus/opus-${OPUS_VERSION}.tar.gz && \
         echo ${OPUS_SHA256SUM} | sha256sum --check && \
         tar -zx --strip-components=1 -f opus-${OPUS_VERSION}.tar.gz && \
         autoreconf -fiv && \
@@ -109,12 +109,30 @@
         make distclean && \
         rm -rf ${DIR} && \
 #RUN  \
+## freetype https://www.freetype.org/
+        DIR=$(mktemp -d) && cd ${DIR} && \
+        curl -sLO http://download.savannah.gnu.org/releases/freetype/freetype-${FREETYPE_VERSION}.tar.gz && \
+        echo ${FREETYPE_SHA256SUM} | sha256sum --check && \
+        tar -zx --strip-components=1 -f freetype-${FREETYPE_VERSION}.tar.gz && \
+        ./configure --disable-static --enable-shared && \
+        make && \
+        make install && \
+        make distclean && \
+        rm -rf ${DIR} && \
+#RUN  \
+## libvstab https://github.com/georgmartius/vid.stab
+        DIR=$(mktemp -d) && cd ${DIR} && \
+        curl -sLO https://github.com/georgmartius/vid.stab/archive/v${LIBVIDSTAB_VERSION}.tar.gz &&\
+        echo ${LIBVIDSTAB_SHA256SUM} | sha256sum --check && \
+        tar -zx --strip-components=1 -f v${LIBVIDSTAB_VERSION}.tar.gz && \
+        cmake . && \
+        make && \
+        make install && \
+        rm -rf ${DIR} && \
+#RUN  \
 ## ffmpeg https://ffmpeg.org/
         DIR=$(mktemp -d) && cd ${DIR} && \
-        gpg --keyserver pool.sks-keyservers.net --recv-keys ${FFMPEG_KEY} && \
-        curl -sLO http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
-        curl -sLO http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz.asc && \
-        gpg --batch  --verify ffmpeg-${FFMPEG_VERSION}.tar.gz.asc ffmpeg-${FFMPEG_VERSION}.tar.gz && \
+        curl -sLO https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
         tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
         ./configure \
         --bindir="${SRC}/bin" \
@@ -127,6 +145,8 @@
         --enable-libopencore-amrnb \
         --enable-libopencore-amrwb \
         --enable-libfdk_aac \
+        --enable-libfreetype \
+        --enable-libvidstab \
         --enable-libmp3lame \
         --enable-libopus \
         --enable-libtheora \

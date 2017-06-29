@@ -24,7 +24,6 @@ RUN     buildDeps="autoconf \
                    coreutils \
                    g++ \
                    gcc \
-                   gnupg \
                    libtool \
                    make \
                    python \
@@ -33,7 +32,7 @@ RUN     buildDeps="autoconf \
                    yasm \
                    zlib-dev" && \
         export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
-        apk  add --update ${buildDeps} libgcc libstdc++ ca-certificates && \
+        apk  add --update ${buildDeps} libgcc libstdc++ ca-certificates libgomp && \
 %%RUN%%
 # cleanup
         cd && \
