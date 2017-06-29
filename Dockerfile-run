@@ -63,7 +63,6 @@
         curl -sLO http://downloads.xiph.org/releases/theora/libtheora-${THEORA_VERSION}.tar.gz && \
         echo ${THEORA_SHA256SUM} | sha256sum --check && \
         tar -zx --strip-components=1 -f libtheora-${THEORA_VERSION}.tar.gz && \
-        sed -i 's/png_sizeof/sizeof/g' examples/png2theora.c && \
         ./configure --prefix="${SRC}" --with-ogg="${SRC}" --bindir="${SRC}/bin" \
         --disable-static --datadir="${DIR}" && \
         make && \
@@ -128,7 +127,6 @@
         --enable-libopencore-amrnb \
         --enable-libopencore-amrwb \
         --enable-libfdk_aac \
-        --enable-libfreetype \
         --enable-libmp3lame \
         --enable-libopus \
         --enable-libtheora \
